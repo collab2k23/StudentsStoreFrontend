@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,7 +13,6 @@ import logo from '../assets/img/logo.png'
 import Alert from '../component/Alert';
 import { url } from '../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 function Copyright(props) {
     return (
@@ -34,12 +33,6 @@ export default function VerifyOTP() {
     const [alert,setAlert]=useState('')
     const [otp,setOtp]=useState('')
     const Navigate=useNavigate()
-    const verified=useSelector((state)=>state.user.verified)
-    useEffect(()=>{
-        if((verified|| localStorage.getItem('token')==='')){
-            
-        }
-    },[])
     const handleSubmit = async(event)=>{
         event.preventDefault()
         const res= await fetch(url+'/api/verifyOTP',{
@@ -108,36 +101,47 @@ export default function VerifyOTP() {
                     OTP sent to your Email xyz
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="otp"
-                        label="Enter OTP"
-                        name="otp"
-                        type="otp"
-                        autoComplete="otp"
-                        autoFocus
-                        value={otp}
-                        onChange={e=>setOtp(e.target.value)}
-                        />
-                   
-                    
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                        >
-                        Verify OTP
-                    </Button>
-                    
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="otp"
+                            label="Enter OTP"
+                            name="otp"
+                            type="otp"
+                            autoComplete="otp"
+                            autoFocus
+                            value={otp}
+                            onChange={e=>setOtp(e.target.value)}
+                            />
+                        
                         <Link href="/register" variant="body2">
                             {"Resend OTP"}
                         </Link>
+                    
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            >
+                            Verify OTP
+                        </Button>
+                        <Grid container sx={{ mt:'2vh' }}>
+                            <Grid item xs>
+                            <Link href="/login" variant="body2">
+                                Login Here !
+                            </Link>
+                            </Grid>
+                            <Grid item>
+                            <Link href="/register" variant="body2">
+                                {"Don't have an account? Register"}
+                            </Link>
+                            </Grid>
+                        </Grid>
                         
                     </Box>
-                    </Box>
+                </Box>
                     </Grid>
                     <Grid item sx={{
                         display:'flex',

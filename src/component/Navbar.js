@@ -76,7 +76,7 @@ function Navbar(){
                             }}>
                                {user?`Hi ${user.username}`:""}{user && user.city ?`, ${user.city}`:''}
                             </Typography>
-                            <Avatar src='' sx={{marginRight:'4px'}} />
+                            <Avatar src={user?user.avatar:''} sx={{marginRight:'4px'}} />
                             <Button variant={ userMode==='BUY'?'contained':'outlined' } sx={{
                                 borderRadius:'0',
                                 marginLeft:'4px',

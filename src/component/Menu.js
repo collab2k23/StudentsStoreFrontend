@@ -1,4 +1,5 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Box, Paper, Typography, Grid, TextField } from '@mui/material'
 import './component.css'
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -7,8 +8,11 @@ import LocalOfferSharpIcon from '@mui/icons-material/LocalOfferSharp';
 import FilterAltSharpIcon from '@mui/icons-material/FilterAltSharp';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 import SearchIcon from '@mui/icons-material/Search';
+import { changeMenu } from '../features/application/appSlice';
 
 export default function Menu() {
+  const dispatch = useDispatch()
+  const currentMenu = useSelector(state => state.app.currentMenu)
   return (
   <Box
   sx={{
@@ -38,7 +42,7 @@ export default function Menu() {
           }}
           />
           </Grid>
-          <Grid item md={2} sx={{
+          <Grid className='searchButton' item md={2} sx={{
             display: 'flex',
             alignItems:'center',
             justifyContent:'center'
@@ -58,7 +62,13 @@ export default function Menu() {
       alignItems: 'center',
     }}
     >
-      <Box className='menuOptions'>
+      <Box className='menuOptions'
+       onClick={()=>dispatch(changeMenu('chats'))}
+       sx={{ 
+        borderLeft: currentMenu==='chats'?'3px solid white':'none',
+        backgroundColor: currentMenu==='chats'?'#7a7a7a':'none'
+      }}
+       >
         <Grid container>
           <Grid item md={9}>
             <Typography className='menuText'>Chats</Typography>
@@ -68,7 +78,13 @@ export default function Menu() {
           </Grid>
         </Grid>
       </Box>
-      <Box className='menuOptions'>
+      <Box className='menuOptions'
+       onClick={()=>dispatch(changeMenu('cart'))}
+       sx={{ 
+        borderLeft: currentMenu==='cart'?'3px solid white':'none',
+        backgroundColor: currentMenu==='cart'?'#7a7a7a':'none'
+      }}
+       >
         <Grid container>
           <Grid item md={9}>
             <Typography className='menuText'>Cart</Typography>
@@ -78,7 +94,13 @@ export default function Menu() {
           </Grid>
         </Grid>
       </Box>
-      <Box className='menuOptions'>
+      <Box className='menuOptions'
+       onClick={()=>dispatch(changeMenu('orders'))}
+       sx={{ 
+        borderLeft: currentMenu==='orders'?'3px solid white':'none',
+        backgroundColor: currentMenu==='orders'?'#7a7a7a':'none'
+      }}
+       >
         <Grid container>
           <Grid item md={9}>
             <Typography className='menuText'>Orders</Typography>
@@ -88,7 +110,13 @@ export default function Menu() {
           </Grid>
         </Grid>
       </Box>
-      <Box className='menuOptions'>
+      <Box className='menuOptions'
+       onClick={()=>dispatch(changeMenu('filter'))}
+       sx={{ 
+        borderLeft: currentMenu==='filter'?'3px solid white':'none',
+        backgroundColor: currentMenu==='filter'?'#7a7a7a':'none'
+      }}
+       >
         <Grid container>
           <Grid item md={9}>
             <Typography className='menuText'>Filter</Typography>
@@ -98,7 +126,13 @@ export default function Menu() {
           </Grid>
         </Grid>
       </Box>
-      <Box className='menuOptions'> 
+      <Box className='menuOptions'
+       onClick={()=>dispatch(changeMenu('account'))}
+       sx={{ 
+        borderLeft: currentMenu==='account'?'3px solid white':'none',
+        backgroundColor: currentMenu==='account'?'#7a7a7a':'none'
+      }}
+       > 
         <Grid container>
           <Grid item md={9}>
             <Typography className='menuText'>Account</Typography>

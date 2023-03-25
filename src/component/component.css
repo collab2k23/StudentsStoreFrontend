@@ -10,22 +10,28 @@
 
 .menuParent :hover{
     cursor: pointer ;
-    background-color: #7a7a7a;
+    background-color: #222222;
+    overflow: hidden;
     /* background-color: white;
     color: #3e3e3e; */
 }
 
 .menuText{
     color: white;
-    padding-left: 30px;
+    padding-left: 25px;
     font-family: 'Alkatra';
 }
 
 .menuIcon{
     color: white;
 }
+
 .searchIcon{
     background-color: white;
     padding: 1px;
     border-radius: 50%;
+}
+
+.searchButton{
+    cursor: pointer;
 }

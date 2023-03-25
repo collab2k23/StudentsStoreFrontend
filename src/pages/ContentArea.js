@@ -1,9 +1,13 @@
 import React from 'react'
+import { Paper } from '@mui/material'
 
 export default function ContentArea() {
   return (
-    <div>
+    <Paper elevation={6} sx={{
+      border: '1px solid black',
+      height: '100%',
+    }}>
       
-    </div>
+    </Paper>
   )
 }

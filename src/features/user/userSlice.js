@@ -8,11 +8,10 @@ const initialState={
     error:'',
     msg:'',
     resStatus:'',
-    userMode:'BUY',
-    verified:false
+    userMode:'BUY'
 }
 
-export const url = 'https://5456-2409-4081-9385-6251-9544-4bea-e585-3bf9.in.ngrok.io'
+export const url = 'http://localhost:1337'
 
 export const registerUser = createAsyncThunk('user/registerUser',(user)=>{
     return axios.post(url+'/api/register',user)

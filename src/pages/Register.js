@@ -17,6 +17,7 @@ import { registerUser, resetStatus} from "../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import MuiPhoneNumber from "mui-phone-number";
+import VerifyOTP from "./VerifyOTP";
 
 function Copyright(props) {
     return (
@@ -34,6 +35,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 function Register(){
+    const [ mode, setMode ] = useState('register')
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const data = useSelector(state => state.user)
@@ -84,7 +86,7 @@ function Register(){
         console.log(data)
         if(data.resStatus==='ok'){
             localStorage.setItem('token',data.token)
-            navigate('/verification')
+            setMode('verifyotp')
             dispatch(resetStatus())
         }else{
             setAlert(data.msg)
@@ -94,6 +96,7 @@ function Register(){
         <>
             <Alert type={ alertType } msg={ alert }/>
             <ThemeProvider theme={theme}>
+                { mode==='register' && 
                 <div style={{
                     height: '100vh',
                     display: 'flex',
@@ -343,6 +346,11 @@ function Register(){
                         </Grid>
                     </Grid>
                 </div>
+                }
+
+                { mode==='verifyotp' &&
+                    <VerifyOTP />
+                }
             </ThemeProvider>
         </>
   );
