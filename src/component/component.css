@@ -1,0 +1,31 @@
+.menuOptions{
+    width: 90%;
+    margin: 1px 1px;
+    padding: 10px ;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid white;
+    height: 50px;
+}
+
+.menuParent :hover{
+    cursor: pointer ;
+    background-color: #7a7a7a;
+    /* background-color: white;
+    color: #3e3e3e; */
+}
+
+.menuText{
+    color: white;
+    padding-left: 30px;
+    font-family: 'Alkatra';
+}
+
+.menuIcon{
+    color: white;
+}
+.searchIcon{
+    background-color: white;
+    padding: 1px;
+    border-radius: 50%;
+}
