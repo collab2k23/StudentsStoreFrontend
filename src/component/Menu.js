@@ -8,6 +8,7 @@ import LocalOfferSharpIcon from '@mui/icons-material/LocalOfferSharp';
 import FilterAltSharpIcon from '@mui/icons-material/FilterAltSharp';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 import SearchIcon from '@mui/icons-material/Search';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { changeMenu } from '../features/application/appSlice';
 
 export default function Menu() {
@@ -111,6 +112,22 @@ export default function Menu() {
         </Grid>
       </Box>
       <Box className='menuOptions'
+       onClick={()=>dispatch(changeMenu('sold'))}
+       sx={{ 
+        borderLeft: currentMenu==='sold'?'3px solid white':'none',
+        backgroundColor: currentMenu==='sold'?'#7a7a7a':'none'
+      }}
+       >
+        <Grid container>
+          <Grid item md={9}>
+            <Typography className='menuText'>Orders</Typography>
+          </Grid>
+          <Grid item md={3}>
+            <LocalOfferSharpIcon className='menuIcon' />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box className='menuOptions'
        onClick={()=>dispatch(changeMenu('filter'))}
        sx={{ 
         borderLeft: currentMenu==='filter'?'3px solid white':'none',
@@ -123,6 +140,22 @@ export default function Menu() {
           </Grid>
           <Grid item md={3}>
             <FilterAltSharpIcon className='menuIcon' />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box className='menuOptions'
+       onClick={()=>dispatch(changeMenu('myproducts'))}
+       sx={{ 
+        borderLeft: currentMenu==='myproducts'?'3px solid white':'none',
+        backgroundColor: currentMenu==='myproducts'?'#7a7a7a':'none'
+      }}
+       > 
+        <Grid container>
+          <Grid item md={9}>
+            <Typography className='menuText'>My Products</Typography>
+          </Grid>
+          <Grid item md={3}>
+            <InventoryIcon className='menuIcon' />
           </Grid>
         </Grid>
       </Box>

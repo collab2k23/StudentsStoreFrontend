@@ -3,7 +3,7 @@ import { CssBaseline ,Box , Grid, Avatar, Typography, Button } from '@mui/materi
 import LogoutIcon from '@mui/icons-material/Logout';
 import logo from "../assets/img/logo.png"
 import { useSelector, useDispatch } from 'react-redux' 
-import { fetchUser, toggleUserMode, resetStatus , logout as Logout } from "../features/user/userSlice";
+import { fetchUser, toggleUserMode, resetStatus , logout as Logout, url } from "../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 function Navbar(){
@@ -76,7 +76,7 @@ function Navbar(){
                             }}>
                                {user?`Hi ${user.username}`:""}{user && user.city ?`, ${user.city}`:''}
                             </Typography>
-                            <Avatar src={user?user.avatar:''} sx={{marginRight:'4px'}} />
+                            <Avatar src={user?url+'/'+user.avatar:''} sx={{marginRight:'4px'}} />
                             <Button variant={ userMode==='BUY'?'contained':'outlined' } sx={{
                                 borderRadius:'0',
                                 marginLeft:'4px',

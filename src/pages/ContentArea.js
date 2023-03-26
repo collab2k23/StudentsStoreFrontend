@@ -3,8 +3,7 @@ import { Paper } from '@mui/material'
 
 export default function ContentArea() {
   return (
-    <Paper elevation={6} sx={{
-      border: '1px solid black',
+    <Paper elevation={24} sx={{
       height: '100%',
     }}>
       
