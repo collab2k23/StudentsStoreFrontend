@@ -5,7 +5,6 @@ import './component.css'
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LocalOfferSharpIcon from '@mui/icons-material/LocalOfferSharp';
-import FilterAltSharpIcon from '@mui/icons-material/FilterAltSharp';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -14,6 +13,7 @@ import { changeMenu } from '../features/application/appSlice';
 export default function Menu() {
   const dispatch = useDispatch()
   const currentMenu = useSelector(state => state.app.currentMenu)
+  const userMode=useSelector(state=>state.user.userMode)
   return (
   <Box
   sx={{
@@ -79,7 +79,7 @@ export default function Menu() {
           </Grid>
         </Grid>
       </Box>
-      <Box className='menuOptions'
+      {userMode==='BUY' && <Box className='menuOptions'
        onClick={()=>dispatch(changeMenu('cart'))}
        sx={{ 
         borderLeft: currentMenu==='cart'?'3px solid white':'none',
@@ -94,8 +94,8 @@ export default function Menu() {
             <ShoppingCartIcon className='menuIcon' />
           </Grid>
         </Grid>
-      </Box>
-      <Box className='menuOptions'
+      </Box>}
+      {userMode==='BUY' && <Box className='menuOptions'
        onClick={()=>dispatch(changeMenu('orders'))}
        sx={{ 
         borderLeft: currentMenu==='orders'?'3px solid white':'none',
@@ -110,8 +110,8 @@ export default function Menu() {
             <LocalOfferSharpIcon className='menuIcon' />
           </Grid>
         </Grid>
-      </Box>
-      <Box className='menuOptions'
+      </Box>}
+      {userMode==='SELL' && <Box className='menuOptions'
        onClick={()=>dispatch(changeMenu('sold'))}
        sx={{ 
         borderLeft: currentMenu==='sold'?'3px solid white':'none',
@@ -126,24 +126,8 @@ export default function Menu() {
             <LocalOfferSharpIcon className='menuIcon' />
           </Grid>
         </Grid>
-      </Box>
-      <Box className='menuOptions'
-       onClick={()=>dispatch(changeMenu('filter'))}
-       sx={{ 
-        borderLeft: currentMenu==='filter'?'3px solid white':'none',
-        backgroundColor: currentMenu==='filter'?'#7a7a7a':'none'
-      }}
-       >
-        <Grid container>
-          <Grid item md={9}>
-            <Typography className='menuText'>Filter</Typography>
-          </Grid>
-          <Grid item md={3}>
-            <FilterAltSharpIcon className='menuIcon' />
-          </Grid>
-        </Grid>
-      </Box>
-      <Box className='menuOptions'
+      </Box>}
+      {userMode==='SELL' && <Box className='menuOptions'
        onClick={()=>dispatch(changeMenu('myproducts'))}
        sx={{ 
         borderLeft: currentMenu==='myproducts'?'3px solid white':'none',
@@ -158,7 +142,7 @@ export default function Menu() {
             <InventoryIcon className='menuIcon' />
           </Grid>
         </Grid>
-      </Box>
+      </Box>}
       <Box className='menuOptions'
        onClick={()=>dispatch(changeMenu('account'))}
        sx={{ 

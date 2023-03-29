@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 .menuOptions{
     width: 90%;
     margin: 1px 1px;
@@ -19,7 +20,7 @@
 .menuText{
     color: white;
     padding-left: 25px;
-    font-family: 'Alkatra';
+    font-family: 'Roboto Condensed'
 }
 
 .menuIcon{

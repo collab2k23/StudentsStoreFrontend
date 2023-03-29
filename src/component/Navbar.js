@@ -5,6 +5,7 @@ import logo from "../assets/img/logo.png"
 import { useSelector, useDispatch } from 'react-redux' 
 import { fetchUser, toggleUserMode, resetStatus , logout as Logout, url } from "../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
+import { changeMenu } from "../features/application/appSlice";
 
 function Navbar(){
     const userMode = useSelector( state => state.user.userMode )
@@ -86,7 +87,10 @@ function Navbar(){
                                 bgcolor: userMode === 'BUY'?'white':'#2e2e2e' ,
                                 borderColor:'white',
                             }}
-                            onClick={ () => dispatch( toggleUserMode('BUY')) }
+                            onClick={ () => {
+                                dispatch(changeMenu('account'))
+                                dispatch( toggleUserMode('BUY'))        
+                        } }
                             >B U Y</Button>
                             <Button variant={ userMode==='SELL'?'contained':'outlined' } sx={{
                                 borderRadius:'0',
@@ -97,7 +101,10 @@ function Navbar(){
                                 color: userMode === 'SELL'?'#2e2e2e':'white',
                                 borderColor: 'white',
                             }}
-                            onClick={ () => dispatch( toggleUserMode('SELL')) }
+                            onClick={ () => {
+                                dispatch(changeMenu('account'))
+                                dispatch( toggleUserMode('SELL')) }
+                            }
                             >S E L L</Button>
                             <Box component={LogoutIcon} sx={{
                                 bgcolor:"white",
