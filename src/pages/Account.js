@@ -1,20 +1,31 @@
 import { Avatar , Box , Grid , TextField , SpeedDial , SpeedDialAction } from '@mui/material'
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React,{ useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import EditIcon from '@mui/icons-material/Edit';
 import UploadIcon from '@mui/icons-material/Upload';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ImageIcon from '@mui/icons-material/Image';
+import DoneIcon from '@mui/icons-material/Done';
+import axios from 'axios';
+import { url } from '../features/user/userSlice';
+import { updateAvatar } from '../features/user/userSlice';
 
 
 const actions = [
-  { icon: <UploadIcon />, name: 'Upload Image' },
+  { icon: <UploadIcon />, name: 'Upload Image', onClick: ()=>{
+    document.getElementById('profile-pic').click()
+  } },
   { icon: <DeleteIcon />, name: 'Remove Image' }
 ];
 
 
 export default function Account() {
   const user=useSelector(state=>state.user.user)
+  const [upicon,setUpicon] = useState('gray') 
+  const dispatch=useDispatch()
+  const [image,setImage]=useState({
+    file:null
+  })
   return (
     <>
         <Grid container 
@@ -27,29 +38,63 @@ export default function Account() {
                 alignItems:'center',
             }}
             >
-                <Avatar sx={{width:'256px',height:'256px'}}></Avatar> 
+                <Avatar sx={{width:'256px',height:'256px'}} src={url+'/'+user.avatar} ></Avatar>
                 <Box
                   sx={{
                     width:'100%',
                     paddingTop:'20px',
-                  //   display:'flex',
-                  //   justifyContent:'left'
+                    display:'flex',
+                    justifyContent:'center'
                   }}
-                >
-                  <SpeedDial
-                    ariaLabel="SpeedDial basic example"
-                    icon={<ImageIcon/>}
-                    direction='down'
-                  >
-                    
-                      <SpeedDialAction
-                        key={actions[0].name}
-                        icon={actions[0].icon}
-                        tooltipTitle={actions[0].name}
-                        onClick={actions[0].onClick}
-                      />
-                  </SpeedDial>
-                </Box>
+                > 
+
+                    <input type='file' name='profile' id='profile-pic' style={{ display:'none' }} onChange={(e)=>{
+                      if(e.currentTarget.value!==null){
+                        setUpicon('#1976d2')
+                        setImage({'file':e.target.files[0]})
+                      }else     
+                        setUpicon('grey')
+                    }} />
+                    <input type='submit' style={{display:'none'}}/>
+                    <SpeedDial
+                      ariaLabel="SpeedDial basic example"
+                      icon={<ImageIcon/>}
+                      direction='down'
+                    >
+                      {actions.map(action=>
+                        <SpeedDialAction
+                        key={action.name}
+                        icon={action.icon}
+                        tooltipTitle={action.name}
+                        onClick={action.onClick}
+                        />
+                      )}
+                    </SpeedDial>
+                    <Avatar sx={{
+                        mx:'8px',
+                        width:'54px',
+                        height:'54px',
+                        backgroundColor: upicon,
+                        cursor:'pointer'
+                      }} onClick={()=>{
+                        const config={
+                          headers:{
+                            'x-access-token':localStorage.getItem('token'),
+                            'Content-Type':'multipart/form-data'
+                          }
+                        }
+                        let form = new FormData()
+                        form.append('profile',image.file)
+                        axios.post(url+'/upload/profile',form,config)
+                        .then(response=>{
+                          if(response.data.status==='ok')
+                            dispatch(updateAvatar(response.data.avatarUrl))
+                        })
+                        
+                      }}>
+                        <DoneIcon />
+                      </Avatar>
+                  </Box>
             </Grid>
             <Grid item md={7}
             sx={{display:'flex',

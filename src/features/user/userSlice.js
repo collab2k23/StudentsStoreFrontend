@@ -11,7 +11,7 @@ const initialState={
     userMode:'BUY'
 }
 
-export const url = 'https://12d3-2405-201-3006-b39-7cce-9588-6b9-b163.in.ngrok.io'
+export const url = 'https://942b-2409-4081-9c94-56b4-4c16-6a52-d838-f4b3.in.ngrok.io'
 
 export const registerUser = createAsyncThunk('user/registerUser',(user)=>{
     return axios.post(url+'/api/register',user)
@@ -33,6 +33,17 @@ export const fetchUser = createAsyncThunk('user/fetchUser',()=>{
     .then(response=>response.data)
 })
 
+export const uploadImage=createAsyncThunk('user/uploadImage',()=>{
+    const config={
+        headers:{
+            'x-access-token':localStorage.getItem('token'),
+            'Content-Type':'multipart/form-data'
+        }
+    }
+    return axios.post(url+'/upload/profile',{},config)
+    .then(response=>response.data)
+})
+
 const userSlice = createSlice({
     name:'user',
     initialState,
@@ -51,6 +62,9 @@ const userSlice = createSlice({
             state.msg=''
             state.resStatus=''
             state.userMode='BUY'
+        },
+        updateAvatar:(state,action)=>{
+            state.user.avatar=action.payload
         }
     },    
     extraReducers: builder=>{
@@ -114,4 +128,4 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer
-export const { toggleUserMode, resetStatus, logout } = userSlice.actions
+export const { toggleUserMode, resetStatus, logout , updateAvatar } = userSlice.actions
