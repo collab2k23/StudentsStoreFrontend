@@ -11,7 +11,7 @@ const initialState={
     userMode:'BUY'
 }
 
-export const url = 'https://942b-2409-4081-9c94-56b4-4c16-6a52-d838-f4b3.in.ngrok.io'
+export const url = 'https://e771-2405-201-3006-b39-364f-8fe3-138d-b51b.in.ngrok.io'
 
 export const registerUser = createAsyncThunk('user/registerUser',(user)=>{
     return axios.post(url+'/api/register',user)

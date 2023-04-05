@@ -38,7 +38,7 @@ export default function Account() {
                 alignItems:'center',
             }}
             >
-                <Avatar sx={{width:'256px',height:'256px'}} src={url+'/'+user.avatar} ></Avatar>
+                <Avatar sx={{width:'256px',height:'256px'}} src={user ? url+'/'+user.avatar:''} ></Avatar>
                 <Box
                   sx={{
                     width:'100%',
