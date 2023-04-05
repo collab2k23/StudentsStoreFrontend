@@ -9,16 +9,8 @@ import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-// import SwipeableViews from 'react-swipeable-views';
-// import { autoPlay } from 'react-swipeable-views-utils';
 import { useTheme } from '@mui/material/styles';
-
-// const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-
-// interface ExpandMoreProps extends IconButtonProps {
-//   expand: boolean;
-// }
+// import { url } from '../features/user/userSlice';
 
 
 export default function MyProducts() {
@@ -58,25 +50,26 @@ export default function MyProducts() {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
   
-    // const handleStepChange = (step) => {
-    //   setActiveStep(step);
-    // };
+    
     return (<Box sx={{width:'900px'}}>
           <Grid container sx={{height:'50%'}}>
-            <Grid item md={5 }>
+            <Grid item md={5}>
             {images.map((step, index) => (
-          <div key={Math.random()}>
-            {index === activeStep ? (
+              <div key={Math.random()}>
+              {index === activeStep ? (
               <Box
-                component="img"
                 sx={{
+                  backgroundImage:`url(${step.imgPath})`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundColor: (t) =>
+                    t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                   height: 255,
                   display: 'block',
                   overflow: 'hidden',
                   width: '100%',
                 }}
-                src={step.imgPath}
-                
               />
             ) : null}
           </div>
@@ -131,7 +124,7 @@ export default function MyProducts() {
       <CardMedia
         component="img"
         height="100"
-        image="imageurl"
+        image={product.img[0]}
         alt="Paella dish"
       />
       <CardContent>
@@ -145,14 +138,7 @@ export default function MyProducts() {
       <CardActions disableSpacing
       sx={{display:'flex',justifyContent:'right'}}
       >
-        {/* <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-          >
-          <ExpandMoreIcon />
-          </ExpandMore> */}
+        
           <IconButton aria-label="delete"  onClick={()=>{
             dispatch(drawercontent(product))
             drawermode()
@@ -168,28 +154,6 @@ export default function MyProducts() {
        >
         {list()}
       </Drawer>
-      {/*<Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-            aside for 10 minutes.
-          </Typography>
-          <Typography paragraph>
-          Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
-          medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
-          occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
-          large plate and set aside, leaving chicken and chorizo in the pan. Add
-            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
-            stirring often until thickened and fragrant, about 10 minutes. Add
-            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.
-          </Typography>
-          <Typography paragraph>
-          </Typography>
-          <Typography>
-          </Typography>
-          </CardContent>
-        </Collapse> */}
     </Card>
         </Grid>
 )}
