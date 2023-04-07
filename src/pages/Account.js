@@ -55,7 +55,6 @@ export default function Account() {
                       }else     
                         setUpicon('grey')
                     }} />
-                    <input type='submit' style={{display:'none'}}/>
                     <SpeedDial
                       ariaLabel="SpeedDial basic example"
                       icon={<ImageIcon/>}

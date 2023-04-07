@@ -114,12 +114,16 @@ export default function MyProducts() {
     <Box sx={{height:'90%'}} >
       <Grid container sx={{height:'100%',overflowY:'scroll'}}>
 
-       {myproducts && myproducts.map((product)=><Grid item md={3} sx={{padding:'15px'}}>
+       {myproducts && myproducts.map((product)=>{
+        const d=new Date(product.createdAt)
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const str=d.getDate()+'-'+months[d.getMonth()]+'-'+d.getFullYear()
+       return <Grid item md={3} sx={{padding:'15px'}}>
 
     <Card sx={{ maxWidth: 345,maxHeight:345 }}>
       <CardHeader
         title={product.title}
-        subheader={product.createdAt}
+        subheader={str}
       />
       <CardMedia
         component="img"
@@ -156,14 +160,14 @@ export default function MyProducts() {
       </Drawer>
     </Card>
         </Grid>
-)}
+})}
       </Grid>
     </Box>
     <Box sx={{display:'flex',justifyContent:'end',alignItems:'flex-end',marginRight:'20px'}}>
       <Avatar sx={{bgcolor:'#2e2e2e'}} onClick={()=>setMode('additem')}><AddIcon/></Avatar>
     </Box>
     </div>}
-    {mode==='additem' && <AddItem />}
+    {mode==='additem' && <AddItem  changeMode={setMode} />}
     </>
   )
 }
