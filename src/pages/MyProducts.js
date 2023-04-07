@@ -10,7 +10,8 @@ import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useTheme } from '@mui/material/styles';
-// import { url } from '../features/user/userSlice';
+import { url } from '../features/user/userSlice';
+import EditIcon from '@mui/icons-material/Edit';
 
 
 export default function MyProducts() {
@@ -35,7 +36,7 @@ export default function MyProducts() {
   const list = () => {
     const images = contents?contents.img.map((content)=>{
       return {
-        imgPath: content
+        imgPath: url+content
       }
     }):[]
     
@@ -52,59 +53,85 @@ export default function MyProducts() {
   
     
     return (<Box sx={{width:'900px'}}>
-          <Grid container sx={{height:'50%'}}>
-            <Grid item md={5}>
-            {images.map((step, index) => (
-              <div key={Math.random()}>
-              {index === activeStep ? (
-              <Box
-                sx={{
-                  backgroundImage:`url(${step.imgPath})`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundColor: (t) =>
-                    t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                  height: 255,
-                  display: 'block',
-                  overflow: 'hidden',
-                  width: '100%',
-                }}
+          <Grid container sx={{height:'50%',padding:'25px'}}>
+            <Grid item md={5} sx={{display:'flex',flexDirection:'column'}}>
+              {images.map((step, index) => (
+                <div key={Math.random()}>
+                {index === activeStep ? (
+                  <Box
+                    sx={{
+                      backgroundImage:`url(${step.imgPath})`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      height: 256,
+                      display: 'block',
+                      overflow: 'hidden',
+                      width: '100%',
+                    }}
+                  />
+                ) : null}
+                </div>
+              ))}
+              <MobileStepper
+                steps={maxSteps}
+                position="static"
+                activeStep={activeStep}
+                nextButton={<Button
+                    size="small"
+                    onClick={handleNext}
+                    disabled={activeStep === maxSteps - 1}
+                  >
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowLeft />
+                    ) : (
+                      <KeyboardArrowRight />
+                    )}
+                  </Button>}
+                backButton={
+                  <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowRight />
+                    ) : (
+                      <KeyboardArrowLeft />
+                    )}
+                  </Button>}
               />
-            ) : null}
-          </div>
-        ))}
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        activeStep={activeStep}
-        nextButton={
-          <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
-            Next
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowLeft />
-            ) : (
-              <KeyboardArrowRight />
-            )}
-          </Button>
-        }
-        backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === 'rtl' ? (
-              <KeyboardArrowRight />
-            ) : (
-              <KeyboardArrowLeft />
-            )}
-            Back
-          </Button>
-        }
-      />
+              
+              {contents && <>
+              <Typography variant='h4' sx={{padding:'10px'}}>{contents.title}</Typography>
+              <Typography variant='h5' sx={{padding:'10px'}}>₹{contents.price}</Typography>
+              <Typography variant='subtitle2' sx={{padding:'10px'}}>Category : {contents.domain}</Typography>
+              <Typography variant='subtitle1' sx={{padding:'10px'}}>{contents.description}</Typography>
+              </> 
+              }
             </Grid>
+            {contents && <Grid item md={7} sx={{display:'flex',flexDirection:'column',padding:'25px'}}>
+              <Typography variant='h5' sx={{textAlign:'center',paddingBottom:'20px'}}>Product Information</Typography>
+              <Grid container sx={{paddingLeft:'30px'}}>
+                {contents.attribute && contents.attribute.map((feature,index)=>{
+                  return<>
+                    <Grid item md={4} sx={{padding:'10px',backgroundColor:'#ced4da',textAlign:'center',borderBottom:'1px solid black'}}>
+                      <Typography>{feature}</Typography>
+                    </Grid>
+                    <Grid item md={8} sx={{padding:'10px',backgroundColor:'white',textAlign:'center',borderBottom:'1px solid black'}}>
+                      <Typography>{contents.val[index]}</Typography>
+                    </Grid>
+                  </>
+                })}
+              </Grid>
+            </Grid>}
           </Grid>
+          <Box sx={{
+            position:'absolute',
+            bottom:'20px',
+            right:'20px'}}>
+            <Avatar>
+              <EditIcon/>
+            </Avatar>
+          </Box>
       </Box>)};
 
   return (
@@ -127,28 +154,31 @@ export default function MyProducts() {
       />
       <CardMedia
         component="img"
-        height="100"
-        image={product.img[0]}
-        alt="Paella dish"
+        height="128"
+        image={url+product.img[0]}
+        alt='product image'
       />
       <CardContent>
         {product.description && <Typography variant="body2" color="text.secondary">
           {product.description}
         </Typography>}
-        <Typography variant="body2" color="text.secondary">
-          {product.price}
-        </Typography>
       </CardContent>
-      <CardActions disableSpacing
-      sx={{display:'flex',justifyContent:'right'}}
-      >
-        
-          <IconButton aria-label="delete"  onClick={()=>{
-            dispatch(drawercontent(product))
-            drawermode()
-            console.log(drawer)}}>
-        <ChevronRightIcon />
-      </IconButton>
+      <CardActions disableSpacing>
+          <Grid container>
+            <Grid item md={6}>
+            <Typography variant="h6" color="black">
+            ₹ {product.price}
+            </Typography>
+            </Grid>
+            <Grid item md={6} sx={{display:'flex',justifyContent:'flex-end'}}>
+              <IconButton aria-label="delete"  onClick={()=>{
+                dispatch(drawercontent(product))
+                drawermode()
+                console.log(drawer)}}>
+                <ChevronRightIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
        </CardActions>
       <Drawer
         open={drawer}

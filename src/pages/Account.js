@@ -38,7 +38,7 @@ export default function Account() {
                 alignItems:'center',
             }}
             >
-                <Avatar sx={{width:'256px',height:'256px'}} src={user ? url+'/'+user.avatar:''} ></Avatar>
+                <img id='profile-display' style={{width:'256px',height:'256px',borderRadius:'50%'}} src={user ? url+'/'+user.avatar:''} ></img>
                 <Box
                   sx={{
                     width:'100%',
@@ -50,6 +50,8 @@ export default function Account() {
 
                     <input type='file' name='profile' id='profile-pic' style={{ display:'none' }} onChange={(e)=>{
                       if(e.currentTarget.value!==null){
+                        const url = URL.createObjectURL(e.target.files[0])
+                        document.getElementById('profile-display').src = url
                         setUpicon('#1976d2')
                         setImage({'file':e.target.files[0]})
                       }else     
