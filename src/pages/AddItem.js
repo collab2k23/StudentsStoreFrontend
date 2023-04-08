@@ -122,9 +122,8 @@ export default function AddItem(props) {
       let form = new FormData()
       form.append('productid',data.newItem._id)
       console.log(image.file)
-      for(let i=0;i<image.length;i++){
+      for (let i = 0; i < image.file.length; i++) {
         form.append('product',image.file[i])
-        console.log(image.file[i])
       }
       axios.post(url+'/upload/newproduct',form,config)
       .then(response=>{

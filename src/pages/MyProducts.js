@@ -12,6 +12,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useTheme } from '@mui/material/styles';
 import { url } from '../features/user/userSlice';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 export default function MyProducts() {
@@ -127,9 +128,34 @@ export default function MyProducts() {
           <Box sx={{
             position:'absolute',
             bottom:'20px',
-            right:'20px'}}>
+            right:'20px',
+            ":hover":{cursor:'pointer'}
+          }}>
             <Avatar>
               <EditIcon/>
+            </Avatar>
+          </Box>
+          <Box sx={{
+            position:'absolute',
+            bottom:'20px',
+            right:'70px',
+            ":hover":{cursor:'pointer'}
+            }}
+            onClick={()=>{
+              fetch(url+'/myproducts/remove',{
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'a-access-token': localStorage.getItem('token')
+                },
+                body: JSON.stringify({
+                  id: contents._id
+                })
+              })
+            }}
+            >
+            <Avatar>
+              <DeleteIcon />
             </Avatar>
           </Box>
       </Box>)};
