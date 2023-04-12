@@ -7,10 +7,10 @@ import Typography from '@mui/material/Typography';
 import { Grid, TextField, Avatar,InputAdornment, Button} from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import Alert from '../component/Alert'
+import Alert from '../../component/Alert'
 import { useSelector, useDispatch } from 'react-redux';
-import { url } from '../features/user/userSlice';
-import { getmyproducts } from '../features/application/appSlice';
+import { url } from '../../features/user/userSlice';
+import { getmyproducts } from '../../features/application/appSlice';
 import axios from 'axios';
 
 

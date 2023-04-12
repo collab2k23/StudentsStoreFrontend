@@ -7,8 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ImageIcon from '@mui/icons-material/Image';
 import DoneIcon from '@mui/icons-material/Done';
 import axios from 'axios';
-import { url } from '../features/user/userSlice';
-import { updateAvatar } from '../features/user/userSlice';
+import { url, updateAvatar} from '../../features/user/userSlice';
 
 
 const actions = [
@@ -20,10 +19,10 @@ const actions = [
 
 
 export default function Account() {
-  const user=useSelector(state=>state.user.user)
-  const [upicon,setUpicon] = useState('gray') 
+  const user=useSelector( state=>state.user.user )
+  const [ upicon, setUpicon ] = useState('gray') 
   const dispatch=useDispatch()
-  const [image,setImage]=useState({
+  const [ image, setImage ]=useState({
     file:null
   })
   return (

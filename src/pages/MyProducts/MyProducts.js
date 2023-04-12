@@ -1,16 +1,17 @@
 import React, { useEffect , useState } from 'react'
-import { drawercontent, getmyproducts } from '../features/application/appSlice'
+import { drawercontent, getmyproducts } from '../../features/application/appSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import AddIcon from '@mui/icons-material/Add';
 import { Box ,Grid , Avatar , Typography , Card , CardHeader, CardMedia, CardContent , CardActions  ,IconButton ,Drawer } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import AddItem from './AddItem';
+import EditItem from './EditItem';
 import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useTheme } from '@mui/material/styles';
-import { url } from '../features/user/userSlice';
+import { url } from '../../features/user/userSlice';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -35,11 +36,11 @@ export default function MyProducts() {
   }
 
   const list = () => {
-    const images = contents?contents.img.map((content)=>{
+    const images = contents?contents.img?contents.img.map((content)=>{
       return {
         imgPath: url+content
       }
-    }):[]
+    }):[]:[]
     
     
     const maxSteps = images.length;
@@ -56,7 +57,7 @@ export default function MyProducts() {
     return (<Box sx={{width:'900px'}}>
           <Grid container sx={{height:'50%',padding:'25px'}}>
             <Grid item md={5} sx={{display:'flex',flexDirection:'column'}}>
-              {images.map((step, index) => (
+              {images && images.map((step, index) => (
                 <div key={Math.random()}>
                 {index === activeStep ? (
                   <Box
@@ -76,7 +77,7 @@ export default function MyProducts() {
                 ) : null}
                 </div>
               ))}
-              <MobileStepper
+              {images.length!==0 &&<MobileStepper
                 steps={maxSteps}
                 position="static"
                 activeStep={activeStep}
@@ -99,7 +100,46 @@ export default function MyProducts() {
                       <KeyboardArrowLeft />
                     )}
                   </Button>}
+              />}
+              {images && images.length===0 &&<> <Box
+              sx={{
+                backgroundImage:'url(https://tse2.mm.bing.net/th?id=OIP.kz5xzTb9k_VVR_f5ykCL0gHaHa&pid=Api&P=0)',
+                backgroundRepeat: 'no-repeat',
+                      backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      height: '256px',
+                      display: 'block',
+                      overflow: 'hidden',
+                      width: '100%',
+              }}
               />
+              <MobileStepper
+                steps={maxSteps}
+                position="static"
+                activeStep={activeStep}
+                nextButton={<Button
+                    size="small"
+                    onClick={handleNext}
+                    disabled
+                  >
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowLeft />
+                    ) : (
+                      <KeyboardArrowRight />
+                    )}
+                  </Button>}
+                backButton={
+                  <Button size="small" onClick={handleBack} disabled>
+                    {theme.direction === 'rtl' ? (
+                      <KeyboardArrowRight />
+                    ) : (
+                      <KeyboardArrowLeft />
+                    )}
+                  </Button>}
+              />
+              </>}
               
               {contents && <>
               <Typography variant='h4' sx={{padding:'10px'}}>{contents.title}</Typography>
@@ -112,7 +152,7 @@ export default function MyProducts() {
             {contents && <Grid item md={7} sx={{display:'flex',flexDirection:'column',padding:'25px'}}>
               <Typography variant='h5' sx={{textAlign:'center',paddingBottom:'20px'}}>Product Information</Typography>
               <Grid container sx={{paddingLeft:'30px'}}>
-                {contents.attribute && contents.attribute.map((feature,index)=>{
+                {contents.attribute[0]!=="" && contents.attribute.map((feature,index)=>{
                   return<>
                     <Grid item md={4} sx={{padding:'10px',backgroundColor:'#ced4da',textAlign:'center',borderBottom:'1px solid black'}}>
                       <Typography>{feature}</Typography>
@@ -122,6 +162,7 @@ export default function MyProducts() {
                     </Grid>
                   </>
                 })}
+                {contents.attribute[0]==="" && <Typography sx={{textAlign:'center',width:'100%',paddingRight:'30px'}}>No Information Available</Typography>}
               </Grid>
             </Grid>}
           </Grid>
@@ -130,7 +171,11 @@ export default function MyProducts() {
             bottom:'20px',
             right:'20px',
             ":hover":{cursor:'pointer'}
-          }}>
+          }}
+          onClick={()=>{
+            setMode('editItem')
+            setDrawer(false)
+            }}>
             <Avatar>
               <EditIcon/>
             </Avatar>
@@ -141,17 +186,22 @@ export default function MyProducts() {
             right:'70px',
             ":hover":{cursor:'pointer'}
             }}
-            onClick={()=>{
-              fetch(url+'/myproducts/remove',{
+            onClick={async()=>{
+              const res = await fetch(url+'/myproducts/remove',{
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'a-access-token': localStorage.getItem('token')
+                  'x-access-token': localStorage.getItem('token')
                 },
                 body: JSON.stringify({
                   id: contents._id
                 })
               })
+              const data = await res.json()
+              if(data.status==='ok'){
+                setDrawer(false)
+                dispatch(getmyproducts())
+              }
             }}
             >
             <Avatar>
@@ -173,23 +223,23 @@ export default function MyProducts() {
         const str=d.getDate()+'-'+months[d.getMonth()]+'-'+d.getFullYear()
        return <Grid item md={3} sx={{padding:'15px'}}>
 
-    <Card sx={{ maxWidth: 345,maxHeight:345 }}>
-      <CardHeader
-        title={product.title}
+    <Card sx={{ height:345 }}>
+      <CardHeader sx={{height:'25%'}}
+        title={product.title.length>20?product.title.substr(0,20)+'....':product.title}
         subheader={str}
       />
       <CardMedia
         component="img"
-        height="128"
-        image={url+product.img[0]}
+        height="35%"
+        image={product.img[0]?url+product.img[0]:'https://tse2.mm.bing.net/th?id=OIP.kz5xzTb9k_VVR_f5ykCL0gHaHa&pid=Api&P=0'}
         alt='product image'
       />
-      <CardContent>
+      <CardContent sx={{height:'25%'}}>
         {product.description && <Typography variant="body2" color="text.secondary">
-          {product.description}
+          {product.description.length>75?product.description.substr(0,75)+'....':product.description}
         </Typography>}
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing sx={{height:'15%'}}>
           <Grid container>
             <Grid item md={6}>
             <Typography variant="h6" color="black">
@@ -223,6 +273,7 @@ export default function MyProducts() {
       <Avatar sx={{bgcolor:'#2e2e2e'}} onClick={()=>setMode('additem')}><AddIcon/></Avatar>
     </Box>
     </div>}
+    {mode==='editItem' && <EditItem changeMode={setMode} /> }
     {mode==='additem' && <AddItem  changeMode={setMode} />}
     </>
   )

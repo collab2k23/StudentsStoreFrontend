@@ -48,7 +48,7 @@ export default function Menu() {
             alignItems:'center',
             justifyContent:'center'
           }}>
-            <SearchIcon className='searchIcon' fontSize='large' />
+            <SearchIcon onClick={()=>dispatch(changeMenu('search'))} className='searchIcon' fontSize='large' />
           </Grid>
         </Grid>
       </Box>
