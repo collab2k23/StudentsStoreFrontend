@@ -259,8 +259,7 @@ export default function MyProducts() {
       <Drawer
         open={drawer}
         onClose={drawermode}
-        anchor='right'
-            
+        anchor='right'  
        >
         {list()}
       </Drawer>

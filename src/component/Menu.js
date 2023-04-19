@@ -1,5 +1,5 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React,{useState} from 'react'
+import { useDispatch, useSelector} from 'react-redux'
 import { Box, Paper, Typography, Grid, TextField } from '@mui/material'
 import './component.css'
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -8,12 +8,13 @@ import LocalOfferSharpIcon from '@mui/icons-material/LocalOfferSharp';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import { changeMenu } from '../features/application/appSlice';
+import { changeMenu, searchedproducts } from '../features/application/appSlice';
 
 export default function Menu() {
   const dispatch = useDispatch()
   const currentMenu = useSelector(state => state.app.currentMenu)
   const userMode=useSelector(state=>state.user.userMode)
+  const [searchKey,setSearchkey] = useState("")
   return (
   <Box
   sx={{
@@ -35,7 +36,7 @@ export default function Menu() {
       }}>
         <Grid container>
           <Grid item md={10} sx={{paddingRight:'10px'}}>
-          <TextField id="outlined-basic" label="Search" variant="filled" 
+          <TextField id="outlined-basic" label="Search" variant="filled" value={searchKey} onChange={e=>setSearchkey(e.target.value)}
           sx={{
             height: '90%',
             bgcolor: '#aeb0b1',
@@ -48,7 +49,11 @@ export default function Menu() {
             alignItems:'center',
             justifyContent:'center'
           }}>
-            <SearchIcon onClick={()=>dispatch(changeMenu('search'))} className='searchIcon' fontSize='large' />
+            <SearchIcon onClick={()=>{
+              dispatch(changeMenu('search'))
+              dispatch(searchedproducts(searchKey))
+              
+            }} className='searchIcon' fontSize='large' />
           </Grid>
         </Grid>
       </Box>

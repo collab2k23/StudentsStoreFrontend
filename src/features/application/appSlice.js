@@ -6,18 +6,29 @@ const initialState = {
     currentMenu:'account',
     loading:false,
     myproducts:[],
+    products:[],
     error:'',
     msg:'',
     drawer:null,
 }
 
-export const getmyproducts=createAsyncThunk('/getmyproduct',(seller)=>{
+export const getmyproducts = createAsyncThunk('/getmyproduct',(seller)=>{
     const config={
         headers:{
             'x-access-token':localStorage.getItem('token')
         }
     }
     return axios.post(url+'/myproducts/all',{},config)
+    .then(response=>response.data)
+})
+
+export const searchedproducts = createAsyncThunk('/searchedproducts',(searchKey)=>{
+    const config={
+        headers:{
+            'x-access-token':localStorage.getItem('token')
+        }
+    }
+    return axios.post(url+'/product/explore',{ key : searchKey },config)
     .then(response=>response.data)
 })
 
@@ -40,7 +51,6 @@ const appSlice = createSlice({
             state.myproducts=[]
         })
         builder.addCase(getmyproducts.fulfilled(),(state,action)=>{
-            console.log(action)
             state.loading=false
             state.msg=action.payload.msg
             state.myproducts=action.payload.myproducts
@@ -51,6 +61,25 @@ const appSlice = createSlice({
             state.msg=''
             state.error=action.error.message
             state.myproducts=[]
+        })
+        builder.addCase(searchedproducts.pending(),(state)=>{
+            state.loading=true
+            state.msg=''
+            state.error=''
+            state.products=[]
+        })
+        builder.addCase(searchedproducts.fulfilled(),(state,action)=>{
+            console.log(action)
+            state.loading=false
+            state.msg=action.payload.msg
+            state.products=action.payload.items
+            state.error=''
+        })
+        builder.addCase(searchedproducts.rejected(),(state,action)=>{
+            state.loading=false
+            state.msg=''
+            state.error=action.error.message
+            state.products=[]
         })
     }
 })
