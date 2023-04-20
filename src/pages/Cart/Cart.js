@@ -7,7 +7,8 @@ import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useTheme } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch , useSelector} from 'react-redux';
+import { drawercontent } from '../../features/application/appSlice';
 
 export default function Cart() {
     const theme = useTheme();
@@ -173,48 +174,7 @@ export default function Cart() {
                   </Grid>
                 </Grid>}
               </Grid>
-              <Box sx={{
-                position:'absolute',
-                bottom:'20px',
-                right:'20px',
-                ":hover":{cursor:'pointer'}
-              }}
-              onClick={()=>{
-                setMode('editItem')
-                setDrawer(false)
-                }}>
-                <Avatar>
-                  <EditIcon/>
-                </Avatar>
-              </Box>
-              <Box sx={{
-                position:'absolute',
-                bottom:'20px',
-                right:'70px',
-                ":hover":{cursor:'pointer'}
-                }}
-                onClick={async()=>{
-                  const res = await fetch(url+'/myproducts/remove',{
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'x-access-token': localStorage.getItem('token')
-                    },
-                    body: JSON.stringify({
-                      id: contents._id
-                    })
-                  })
-                  const data = await res.json()
-                  if(data.status==='ok'){
-                    setDrawer(false)
-                    dispatch(getmyproducts())
-                  }
-                }}
-                >
-                <Avatar>
-                  <DeleteIcon />
-                </Avatar>
-              </Box>
+              
           </Box>)};
 
 
