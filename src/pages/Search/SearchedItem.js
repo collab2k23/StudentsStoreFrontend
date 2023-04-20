@@ -269,7 +269,35 @@ export default function SearchedItem() {
               </Typography>}
             </div>
             <div style={{display:'flex', flexDirection:'column',justifyContent:'left',alignItems:'flex-start'}}>
-              <Button sx={{height:'33%'}} >
+              <Button sx={{height:'33%'}} 
+              onClick={async()=>{
+                const config={
+                  headers:{
+                    'x-access-token':localStorage.getItem('token'),
+                    'Content-Type':'application/json'
+                  }
+                }
+                axios.post(url+'/product/addtocart',{productid:product._id},config)
+                .then(response=>{
+                  console.log(response.data)
+                  if(response.data.status==='error'){
+                    setAlert('Already in cart')
+                    setAlertType('warning')
+                    setTimeout(()=>{
+                      setAlert('')
+                      setAlertType('')
+                    },3000)
+                  }
+                  else{
+                    setAlert('Added to cart')
+                    setAlertType('success')
+                    setTimeout(()=>{
+                      setAlert('')
+                      setAlertType('')
+                    },3000)
+                  }
+                })
+              }}>
                 <Box sx={{margin:'5px',backgroundColor:'grey',padding:'10px',color:'white',borderRadius:'50%'}}><ShoppingCartIcon/></Box>
                 <Typography>Add To Cart</Typography>
               </Button>
