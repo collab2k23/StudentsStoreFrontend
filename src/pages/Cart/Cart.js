@@ -9,6 +9,9 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch , useSelector} from 'react-redux';
 import { drawercontent } from '../../features/application/appSlice';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import axios from 'axios';
 
 export default function Cart() {
     const theme = useTheme();
@@ -174,6 +177,59 @@ export default function Cart() {
                   </Grid>
                 </Grid>}
               </Grid>
+              <Box sx={{
+            position:'absolute',
+            bottom:'20px',
+            right:'20px',
+            padding:'10px',
+            ":hover":{cursor:'pointer'}
+          }}
+          // onClick={}
+            >
+              <QuestionAnswerIcon/>
+          </Box>
+          <Box sx={{
+            position:'absolute',
+            bottom:'20px',
+            right:'70px',
+            padding:'10px',
+            ":hover":{cursor:'pointer'}
+            }}
+            onClick={async()=>{
+              drawermode()
+              const config={
+                headers:{
+                  'x-access-token':localStorage.getItem('token'),
+                  'Content-Type':'application/json'
+                }
+              }
+              axios.post(url+'/product/removefromcart',{productid:contents._id},config)
+              .then(response=>{
+                console.log(response.data)
+                if(response.data.status=='ok'){
+                  getCart()
+                }
+                // if(response.data.status==='error'){
+                //   setAlert('Already in cart')
+                //   setAlertType('warning')
+                //   setTimeout(()=>{
+                //     setAlert('')
+                //     setAlertType('')
+                //   },3000)
+                // }
+                // else{
+                //   setAlert('Added to cart')
+                //   setAlertType('success')
+                //   setTimeout(()=>{
+                //     setAlert('')
+                //     setAlertType('')
+                //   },3000)
+                // }
+              })
+            }}
+            >
+              <DeleteForeverIcon />
+          </Box>
               
           </Box>)};
 

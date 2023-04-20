@@ -27,14 +27,14 @@ export default function Menu() {
     paddingTop: '10px',
   }}
   >
-    <Box sx={{
+    {userMode==='BUY' &&<Box sx={{
         px: '8px',
         height: '80px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Grid container>
+         <Grid container>
           <Grid item md={10} sx={{paddingRight:'10px'}}>
           <TextField id="outlined-basic" label="Search" variant="filled" value={searchKey} onChange={e=>setSearchkey(e.target.value)}
           sx={{
@@ -56,7 +56,7 @@ export default function Menu() {
             }} className='searchIcon' fontSize='large' />
           </Grid>
         </Grid>
-      </Box>
+      </Box>}
     <Box component={ Paper }
     className='menuParent'
     sx={{
