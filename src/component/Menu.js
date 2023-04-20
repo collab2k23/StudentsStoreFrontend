@@ -100,38 +100,6 @@ export default function Menu() {
           </Grid>
         </Grid>
       </Box>}
-      {userMode==='BUY' && <Box className='menuOptions'
-       onClick={()=>dispatch(changeMenu('orders'))}
-       sx={{ 
-        borderLeft: currentMenu==='orders'?'3px solid white':'none',
-        backgroundColor: currentMenu==='orders'?'#7a7a7a':'none'
-      }}
-       >
-        <Grid container>
-          <Grid item md={9}>
-            <Typography className='menuText'>Orders</Typography>
-          </Grid>
-          <Grid item md={3}>
-            <LocalOfferSharpIcon className='menuIcon' />
-          </Grid>
-        </Grid>
-      </Box>}
-      {userMode==='SELL' && <Box className='menuOptions'
-       onClick={()=>dispatch(changeMenu('sold'))}
-       sx={{ 
-        borderLeft: currentMenu==='sold'?'3px solid white':'none',
-        backgroundColor: currentMenu==='sold'?'#7a7a7a':'none'
-      }}
-       >
-        <Grid container>
-          <Grid item md={9}>
-            <Typography className='menuText'>Orders</Typography>
-          </Grid>
-          <Grid item md={3}>
-            <LocalOfferSharpIcon className='menuIcon' />
-          </Grid>
-        </Grid>
-      </Box>}
       {userMode==='SELL' && <Box className='menuOptions'
        onClick={()=>dispatch(changeMenu('myproducts'))}
        sx={{ 

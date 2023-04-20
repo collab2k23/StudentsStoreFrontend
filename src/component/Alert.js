@@ -11,7 +11,7 @@ export default function Alert(props) {
       zIndex:'10'
     }}>
         <div className={`alert alert-${props.type} alert-dismissible fade show mx-3 my-0`} role="alert">
-        <strong>Sorry Pal ! </strong> {props.msg}</div>
+        <strong> ! </strong> {props.msg}</div>
     </div>}
   </>
   )
