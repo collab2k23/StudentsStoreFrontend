@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { url } from '../../features/user/userSlice'
-import { Typography , Grid , Box , Card , CardHeader , CardMedia , CardContent , CardActions , IconButton ,Drawer , Avatar } from '@mui/material'
+import { Typography , Grid , Box , Card , CardHeader , CardMedia , CardContent , CardActions , IconButton ,Drawer  } from '@mui/material'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
@@ -12,6 +12,7 @@ import { drawercontent } from '../../features/application/appSlice';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import axios from 'axios';
+import Alert from '../../component/Alert';
 
 export default function Cart() {
     const theme = useTheme();
@@ -206,25 +207,15 @@ export default function Cart() {
               axios.post(url+'/product/removefromcart',{productid:contents._id},config)
               .then(response=>{
                 console.log(response.data)
-                if(response.data.status=='ok'){
+                if(response.data.status==='ok'){
                   getCart()
                 }
-                // if(response.data.status==='error'){
-                //   setAlert('Already in cart')
-                //   setAlertType('warning')
-                //   setTimeout(()=>{
-                //     setAlert('')
-                //     setAlertType('')
-                //   },3000)
-                // }
-                // else{
-                //   setAlert('Added to cart')
-                //   setAlertType('success')
-                //   setTimeout(()=>{
-                //     setAlert('')
-                //     setAlertType('')
-                //   },3000)
-                // }
+                if(response.data.status==='error'){
+                  setError()
+                  setTimeout(()=>{
+                    setError('')
+                  },3000)
+                }
               })
             }}
             >
@@ -235,6 +226,7 @@ export default function Cart() {
 
 
   return (<>
+  <Alert type='danger' msg={ error }/>
   {cart.length===0 && <Typography variant='h3' sx={{
     width:'60%',
     textAlign:'center',

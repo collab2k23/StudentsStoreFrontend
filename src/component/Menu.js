@@ -4,7 +4,6 @@ import { Box, Paper, Typography, Grid, TextField } from '@mui/material'
 import './component.css'
 import SettingsIcon from '@mui/icons-material/Settings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import LocalOfferSharpIcon from '@mui/icons-material/LocalOfferSharp';
 import ChatBubbleRoundedIcon from '@mui/icons-material/ChatBubbleRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import InventoryIcon from '@mui/icons-material/Inventory';

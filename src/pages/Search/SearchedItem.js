@@ -1,6 +1,6 @@
 import React , {useState}from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Box ,Grid , Avatar , Typography , Card , CardHeader, CardMedia, CardContent , CardActions  ,IconButton ,Drawer, Paper, Button } from '@mui/material';
+import { Box ,Grid , Avatar , Typography ,Drawer, Paper, Button } from '@mui/material';
 import { url } from '../../features/user/userSlice';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
@@ -12,6 +12,7 @@ import MobileStepper from '@mui/material/MobileStepper';
 import { drawercontent } from '../../features/application/appSlice';
 import axios from 'axios';
 import Alert from '../../component/Alert';
+import SendIcon from '@mui/icons-material/Send';
 
 
 export default function SearchedItem() {
@@ -22,6 +23,7 @@ export default function SearchedItem() {
   const [activeStep, setActiveStep] = useState(0);
   const dispatch = useDispatch()
   const [drawer,setDrawer]=useState(false)
+  const [address,setAddress] = useState(null)
   const contents=useSelector(state=>state.app.drawer)
   const drawermode=()=>{
     if(drawer===true)
@@ -31,6 +33,10 @@ export default function SearchedItem() {
   }
 
   const list = () => {
+    const d = new Date(contents.createdAt)
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September","October", "November", "December"];
+    const str = d.getDate()+'-'+months[d.getMonth()]+'-'+d.getFullYear()
+    
     const images = contents?contents.img?contents.img.map((content)=>{
       return {
         imgPath: url+content
@@ -47,7 +53,7 @@ export default function SearchedItem() {
     const handleBack = () => {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-  
+    
     
     return (<Box sx={{width:'900px'}}>
           <Grid container sx={{height:'50%',padding:'25px'}}>
@@ -137,6 +143,7 @@ export default function SearchedItem() {
               </>}
               
               {contents && <>
+              <Typography variant='subtitle1' sx={{padding:'10px'}}>Created At : {str}</Typography>
               <Typography variant='h4' sx={{padding:'10px'}}>{contents.title}</Typography>
               <Typography variant='h5' sx={{padding:'10px'}}>₹{contents.price}</Typography>
               <Typography variant='subtitle2' sx={{padding:'10px'}}>Category : {contents.domain}</Typography>
@@ -159,15 +166,51 @@ export default function SearchedItem() {
                 })}
                 {contents.attribute[0]==="" && <Typography sx={{textAlign:'center',width:'100%',paddingRight:'30px'}}>No Information Available</Typography>}
               </Grid>
+                <Typography variant='h5' sx={{marginTop:'25px'}}> Seller Details -</Typography>
+                {address && <>
+                {address.city && <Typography>City: {address.city}</Typography>}
+                {address.district && <Typography>District : {address.district}</Typography>}
+                {address.state && <Typography>State : {address.state}</Typography>}
+                {address.pincode && <Typography>Pincode : {address.pincode}</Typography>}
+                {address.address && <Typography>Address : {address.address}</Typography>}
+                </>}
+                {!address && <Typography>No details Available</Typography>}
             </Grid>}
+            
+             
+              
           </Grid>
+          <Box id='newchat' component={ Paper } sx={{
+            position: 'absolute',
+            bottom:'70px',
+            right:'40px',
+            padding:'10px',
+            border: '1px solid black',
+            display: 'none',
+            backgroundColor: '#efefef',
+          }}>
+            <Typography variant='subtitle2'>Message:</Typography>
+            <div>
+              <input type='text' />
+              <Box sx={{
+                display:'inline-block', 
+                margin: 'auto 8px',
+                padding: '3px', 
+                border:'1px solid black', 
+                borderRadius:'2px',
+                cursor: 'pointer'
+                }}> <SendIcon/> </Box>
+            </div>
+          </Box>
           <Box sx={{
             position:'absolute',
             bottom:'20px',
             right:'20px',
             ":hover":{cursor:'pointer'}
           }}
-          // onClick={}
+          onClick={()=>{
+            document.getElementById('newchat').style.display = 'block'
+          }}
             >
             <Avatar>
               <QuestionAnswerIcon/>
@@ -224,9 +267,7 @@ export default function SearchedItem() {
       <Box sx={{height:'90%'}} >
 
         {products && products.map((product,index)=>{
-          const d=new Date(product.createdAt)
-          const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-          const str=d.getDate()+'-'+months[d.getMonth()]+'-'+d.getFullYear()
+          
           return     (
           <Box component={Paper} elevation={3} style={{
             height: '30vh',
@@ -305,9 +346,20 @@ export default function SearchedItem() {
                 <Box sx={{margin:'5px',backgroundColor:'grey',padding:'10px',color:'white',borderRadius:'50%'}}><QuestionAnswerIcon/></Box>
                 <Typography>Chat</Typography>
               </Button>
-              <Button sx={{height:'33%', position:'absolute',right:'5px',bottom:'5px',borderRadius:'50%'}} onClick={()=>{
+              <Button sx={{height:'33%', position:'absolute',right:'5px',bottom:'5px',borderRadius:'50%'}} onClick={async()=>{
                 drawermode()
                 dispatch(drawercontent(product))
+                const config={
+                  headers:{
+                    'x-access-token':localStorage.getItem('token'),
+                    'Content-Type':'application/json'
+                  }
+                }
+                axios.post(url+'/product/getaddress',{addressid:product.address},config)
+                .then(res=>{console.log(res.data)
+                      setAddress(res.data.address)
+                })
+
               }} >
                 <Box sx={{padding:'10px',color:'black',borderRadius:'50%'}}><KeyboardDoubleArrowRightIcon/></Box>
                 {/* <Typography>view more</Typography> */}
@@ -328,6 +380,7 @@ export default function SearchedItem() {
          >
           {list()}
         </Drawer> 
+      
     </div>
     </>
   )
