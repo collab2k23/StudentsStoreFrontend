@@ -9,7 +9,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { useTheme } from '@mui/material/styles';
 import MobileStepper from '@mui/material/MobileStepper';
-import { drawercontent } from '../../features/application/appSlice';
+import { changeMenu, drawercontent } from '../../features/application/appSlice';
 import axios from 'axios';
 import Alert from '../../component/Alert';
 import SendIcon from '@mui/icons-material/Send';
@@ -33,7 +33,7 @@ export default function SearchedItem() {
   }
 
   const list = () => {
-    const d = new Date(contents.createdAt)
+    const d = new Date(contents?contents.createdAt:'')
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September","October", "November", "December"];
     const str = d.getDate()+'-'+months[d.getMonth()]+'-'+d.getFullYear()
     
@@ -143,7 +143,7 @@ export default function SearchedItem() {
               </>}
               
               {contents && <>
-              <Typography variant='subtitle1' sx={{padding:'10px'}}>Created At : {str}</Typography>
+              <Typography variant='subtitle1' sx={{padding:'10px'}}>Posted At : {str}</Typography>
               <Typography variant='h4' sx={{padding:'10px'}}>{contents.title}</Typography>
               <Typography variant='h5' sx={{padding:'10px'}}>₹{contents.price}</Typography>
               <Typography variant='subtitle2' sx={{padding:'10px'}}>Category : {contents.domain}</Typography>
@@ -191,7 +191,7 @@ export default function SearchedItem() {
           }}>
             <Typography variant='subtitle2'>Message:</Typography>
             <div>
-              <input type='text' />
+              <input type='text' id='message' />
               <Box sx={{
                 display:'inline-block', 
                 margin: 'auto 8px',
@@ -199,7 +199,30 @@ export default function SearchedItem() {
                 border:'1px solid black', 
                 borderRadius:'2px',
                 cursor: 'pointer'
-                }}> <SendIcon/> </Box>
+                }}
+                onClick={()=>{
+                  console.log(contents._id);
+                  const msg = document.getElementById('message').value
+                  const body = {
+                    sellerid: contents.seller,
+                    content: msg,
+                    itemid: contents._id,
+                    sender:'buyer'
+                  }
+                  const config = {
+                    headers: {
+                      'x-access-token': localStorage.getItem('token'),
+                      'Content-Type': 'application/json',
+                    }
+                  }
+                  axios.post(url+'/product/newchat',body,config)
+                  .then(response => {
+                    if(response.data.status==='ok'){
+                      dispatch(changeMenu('buyerchat'))
+                    }
+                  })
+                }}
+                > <SendIcon/> </Box>
             </div>
           </Box>
           <Box sx={{

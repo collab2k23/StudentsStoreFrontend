@@ -68,7 +68,9 @@ export default function Menu() {
     }}
     >
       <Box className='menuOptions'
-       onClick={()=>dispatch(changeMenu('chats'))}
+       onClick={()=>{
+        userMode==='SELL'?dispatch(changeMenu('sellerchat')):dispatch(changeMenu('buyerchat'))
+      }}
        sx={{ 
         borderLeft: currentMenu==='chats'?'3px solid white':'none',
         backgroundColor: currentMenu==='chats'?'#7a7a7a':'none'

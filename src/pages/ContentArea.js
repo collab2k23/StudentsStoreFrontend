@@ -5,6 +5,8 @@ import Account from './Accounts/Account'
 import MyProducts from './MyProducts/MyProducts'
 import SearchedItem from './Search/SearchedItem'
 import Cart from './Cart/Cart'
+import Chat from './Chat/Chat'
+import SellerChat from './Chat/SellerChat'
 
 export default function ContentArea() {
   const currentMenu=useSelector(state=>state.app.currentMenu)
@@ -18,6 +20,8 @@ export default function ContentArea() {
     {currentMenu==='myproducts' && <MyProducts/>}
     {currentMenu==='search' && <SearchedItem/>}
     {currentMenu==='cart' && <Cart/>}
+    {currentMenu==='buyerchat' && <Chat/>}
+    {currentMenu==='sellerchat' && <SellerChat/>}
     </Paper>
   )
 }
