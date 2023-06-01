@@ -167,7 +167,7 @@ export default function MyProducts() {
             </Grid>}
           </Grid>
           <Box sx={{
-            position:'absolute',
+            position:'fixed',
             bottom:'20px',
             right:'20px',
             ":hover":{cursor:'pointer'}
@@ -181,7 +181,7 @@ export default function MyProducts() {
             </Avatar>
           </Box>
           <Box sx={{
-            position:'absolute',
+            position:'fixed',
             bottom:'20px',
             right:'70px',
             ":hover":{cursor:'pointer'}

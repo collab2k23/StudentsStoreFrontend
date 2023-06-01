@@ -25,7 +25,7 @@ export default function SellerChat() {
             if(res.data.status==='ok'){
                 console.log(res.data)
                 setChats(res.data.chats)
-                let products = res.data.chats.map(chat=>chat.item._id) 
+                let products = res.data.chats.map(chat=>chat.buyer._id) 
                 let productSet = new Set(products)
                 setProducts(Array.from(productSet))
             }

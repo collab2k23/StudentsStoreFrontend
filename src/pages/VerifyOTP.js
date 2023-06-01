@@ -98,7 +98,7 @@ export default function VerifyOTP() {
                     Verify Email
                     </Typography>
                     <Typography component="h1" variant="subtitle1" sx={{color:'green'}}>
-                    OTP sent to your Email xyz
+                    OTP sent to your provided email
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
                         <TextField
